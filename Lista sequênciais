@@ -1,0 +1,107 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// criação da lista => que será global
+
+#define tamanho 10
+// a modificação do tamnho se torna mais facil já que não vai precisar modificar durante todo o cod. e sim só aperenas o define;
+
+int lista[tamanho];
+int posicao = 0;
+//auxiliar 
+
+// declaração dos metodos que vão ser criados 
+// os medotos são criados fora do main 
+// o uso dos metodos ocorre somento dentro do main
+
+void inserir(int elemento);
+void imprimir();
+int buscar(int elemento);
+int obter(int indice);
+int tamanhol();
+int apagar();
+void remover(int elemento);
+
+int main() {
+
+    for (int x=0; x< tamanho;x++){
+        inserir(x);
+    }
+    imprimir();
+    printf("%d \n",buscar(2));
+    printf("%d \n",buscar(20));
+    printf("%d \n",obter(5));
+    printf("%d \n", tamanhol());
+    remover(3);
+    imprimir();
+    apagar();
+    printf("%d \n", tamanhol());
+    
+    
+    return 0;
+}
+void imprimir(){
+    printf("[");
+    for (int i = 0 ; i < posicao ; i++)
+    {
+        printf("%d ",lista[i]);
+    }
+    printf("]\n");
+}
+
+void inserir(int elemento){
+// conferir se a lista está cheia 
+    if (posicao >= tamanho){
+        printf("Lista cheia!");
+        exit(1);
+    }
+//insere o elemento na lista e incrementa o auxiliar que indica a posição do ultimo elemento e por consequencia a quantidade de elementos da lista 
+    lista[posicao] = elemento;
+    posicao++;
+}
+
+int buscar(int elemento){
+// varrer a lista para encontrar o elemento
+    for (int x=0; x <posicao;x++){
+        if (elemento==lista[x]){
+            return(x);
+        }
+    }
+    return -1;
+    // não existe o elemento 
+}
+
+int obter(int indice){
+// confere se o indice existe 
+    if (indice >=posicao || indice<0){
+        printf("Lista menor");
+        exit(1);
+    }
+    return lista[indice];
+}
+
+int tamanhol(){
+    return posicao;
+}
+
+void remover (int elemento){
+// busca o elemnto
+   int aux = buscar(elemento);
+   
+   if (aux== -1){
+       return;
+   }
+  // se existir vai fazer a substituição dele pelo proximo e puxar os outros elementos para tras 
+   for (int x=aux; x<posicao;x++){
+       lista[x]=lista[x+1];
+   }
+   // diminui o tamanho da auxiliar já que o mesmo corresponde ao tamanho real da lista 
+   posicao--;
+   
+}
+
+int apagar(){
+// posição = 0 isso quer dizer que não há mais elementos e os que estão ali serão substituidos 
+    return posicao=0;
+}
