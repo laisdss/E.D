@@ -1,0 +1,132 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct lista{
+    int dado;
+    struct lista *proximo;
+};
+
+struct lista *inicio=NULL, *fim=NULL;
+
+void inserir(int elemento);
+void imprimir();
+struct lista *buscar(int dado);
+int tamanho();
+int obter (struct lista*elemento);
+void remover(int elemento);
+void apagar();
+
+int main() {
+
+    for (int x=0;x<5;x++){
+        inserir(x);
+    }
+    imprimir();
+    printf("\n %d\n",buscar(1));
+    printf(" %d\n",tamanho());
+    remover(2);
+    imprimir();
+    //printf("%d\n",obter(buscar(5)));
+    apagar();
+    imprimir();
+    printf("\n iruuuuuuuuuuuuuuu");
+    
+    return 0;
+}
+
+void inserir(int elemento){
+    
+    struct lista *novo;
+    novo=malloc(sizeof(struct lista));
+    novo->dado=elemento;
+    novo->proximo=NULL;
+    
+    if (inicio==NULL){
+        inicio=novo;
+        fim=novo;
+    }else{
+        fim->proximo=novo;
+        fim=novo;
+    }
+    
+}
+
+void imprimir(){
+    struct lista *aux = inicio;
+    
+    printf("[ ");
+    while(aux) 
+    {
+        printf("%d ", aux->dado);
+        aux = aux->proximo;
+    }
+    printf("]");
+}
+
+struct lista *buscar (int dado){
+    
+    struct lista *aux=inicio;
+    while (aux){
+        if (dado== aux->dado){
+            return (aux);
+        }
+        aux=aux->proximo;
+    }
+    return NULL;
+}
+
+int tamanho(){
+    struct lista* aux=inicio;
+    int x=0;
+    while(aux){
+        x++;
+        aux=aux->proximo;
+    }
+    return x;
+}
+int obter (struct lista*elemento){
+    if (elemento==NULL){
+        printf("não tem");
+        exit(1);
+
+    }else{
+        return elemento->dado;
+    }
+}
+void remover(int elemento){
+    
+   struct lista *aux=inicio, *antes=NULL;
+   
+   while(aux){
+       
+       if  (elemento==aux->dado){
+           
+           if (aux==inicio){
+               inicio=aux->proximo;
+           }else if(aux==fim){
+               fim=antes;
+               antes->proximo=NULL;
+           }else{
+               antes->proximo=aux->proximo;
+           }
+           free(aux);
+           return;
+       }
+       antes=aux;
+       aux=aux->proximo;
+   }
+ 
+}
+void apagar(){
+    struct lista *aux = inicio, *ant = NULL;
+    //limpando os nós
+    while(aux){
+        ant = aux;
+        aux = aux->proximo;
+        free(ant);
+    }
+    //resetando os ponteiros
+    inicio = fim = NULL;
+}
+
