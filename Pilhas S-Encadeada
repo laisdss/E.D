@@ -12,7 +12,7 @@ struct pilha{
     struct pilha *proximo;
 };
 
-struct lista *fim=NULL;
+struct pilha *fim=NULL;
 
 void push(int elemento); // mesmo que o inserir;
 int pop();// obtem e apaga o ultimo item da pilha;
@@ -41,7 +41,7 @@ void push(int elemento){
     novo->dado=elemento;
     novo->proximo=NULL;
     
-    if (inicio==NULL){
+    if (fim==NULL){
         fim=novo;
     }else{
         novo->proximo=fim;  //atribui ao campo proximo o endereço do nó anterior que fica armazenado em topo;
@@ -64,7 +64,7 @@ void imprimir(){
 
 
 int tamanho(){
-    struct pilha* aux=inicio;
+    struct pilha* aux=fim;
     int x=0;
     while(aux){
         x++;
@@ -79,7 +79,7 @@ int pop (){
     }else{
           int dado = fim->dado; // extrai o dado 
           struct pilha *topo=fim; // faz uma copia do fim
-          fim=fim->procimo; // atualiza a variavel fim
+          fim=fim->proximo; // atualiza a variavel fim
           free(topo); // libera a memoria ocupada pela cópia;
           return dado;
     
