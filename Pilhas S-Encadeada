@@ -1,0 +1,99 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// pilha tem um funcionamento muito parecido com o das listas;
+// pilha != lista em sua politica de acesso;
+// na pilha o 1º elemento a entrar é o último a sair e o último a entrar é o 1º a sair;
+// na lista encadeada o ponteiro leva ao proximo nó já na pilha ele aponta para o nó anterior;
+
+struct pilha{
+    int dado;
+    struct pilha *proximo;
+};
+
+struct lista *fim=NULL;
+
+void push(int elemento); // mesmo que o inserir;
+int pop();// obtem e apaga o ultimo item da pilha;
+void imprimir();
+int tamanho();
+void apagar();
+
+int main() {
+
+    for (int x=0;x<5;x++){
+        push(x);
+    }
+    imprimir();
+    printf("%d\n",pop());
+    apagar();
+    imprimir();
+    printf("\n iruuuuuuuuuuuuuuu");
+    
+    return 0;
+}
+
+void push(int elemento){
+    
+    struct pilha *novo;
+    novo=malloc(sizeof(struct pilha));
+    novo->dado=elemento;
+    novo->proximo=NULL;
+    
+    if (inicio==NULL){
+        fim=novo;
+    }else{
+        novo->proximo=fim;  //atribui ao campo proximo o endereço do nó anterior que fica armazenado em topo;
+        fim=novo; // atualiza o topo da pilha;
+    }
+    
+}
+
+void imprimir(){
+    struct pilha *aux = fim;
+    
+    printf("[ ");
+    while(aux) 
+    {
+        printf("%d ", aux->dado);
+        aux = aux->proximo;
+    }
+    printf("]");
+}
+
+
+int tamanho(){
+    struct pilha* aux=inicio;
+    int x=0;
+    while(aux){
+        x++;
+        aux=aux->proximo;
+    }
+    return x;
+}
+int pop (){
+    if (!fim){
+        printf("não tem");
+        exit(1);
+    }else{
+          int dado = fim->dado; // extrai o dado 
+          struct pilha *topo=fim; // faz uma copia do fim
+          fim=fim->procimo; // atualiza a variavel fim
+          free(topo); // libera a memoria ocupada pela cópia;
+          return dado;
+    
+    }
+}
+
+void apagar(){
+    struct pilha *aux = fim, *ant = NULL;
+    //limpando os nós
+    while(aux){
+        ant = aux;
+        aux = aux->proximo;
+        free(ant);
+    }
+    //resetando os ponteiros
+   fim = NULL;
+}
