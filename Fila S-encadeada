@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// fila tem sua politica de funcionamento onde o primeiro a entrar tambem será o primeiro a sair;
+
+struct fila{
+    int dado;
+    struct fila *proximo;
+};
+
+struct fila *fim=NULL, *inicio=NULL;
+
+void enqueue(int elemento); // mesmo que o inserir
+int desqueue(); // obtem e apaga o ultimo item da pilha
+void imprimir();
+int tamanho();
+void apagar();
+
+int main() {
+    for (int x=0; x<5; x++) {
+        enqueue(x);
+    }
+    imprimir();
+    printf("\n%d\n", desqueue());
+    apagar();
+    imprimir();
+    printf("\n iruuuuuuuuuuuuuuu");
+    
+    return 0;
+}
+
+void enqueue(int elemento) {
+    struct fila *novo;
+    novo = malloc(sizeof(struct fila));
+    novo->dado = elemento;
+    novo->proximo = NULL;
+    
+    if (!inicio) {
+        inicio = fim = novo;
+    } else {
+        fim->proximo = novo;  // atribui ao campo proximo do endereço do nó anterior o endereço do atual para que assim tenha ligação
+        fim = novo; // atualiza o fim da fila
+    }
+}
+
+void imprimir() {
+    struct fila *aux = inicio;
+    
+    printf("[ ");
+    while (aux) {
+        printf("%d ", aux->dado);
+        aux = aux->proximo;
+    }
+    printf("]");
+}
+
+int tamanho() {
+    struct fila *aux = inicio;
+    int x = 0;
+    while (aux) {
+        x++;
+        aux = aux->proximo;
+    }
+    return x;
+}
+
+int desqueue() {
+    if (!inicio) {
+        printf("não tem");
+        exit(1);
+    } else {
+        int dado = inicio->dado; // extrai o dado
+        struct fila *primeiro = inicio; // faz uma copia do inicio
+        inicio = inicio->proximo; // atualiza a variavel inicio
+        if (inicio == NULL) fim = NULL; // atualiza o fim se a fila ficar vazia
+        free(primeiro); // libera a memoria ocupada pela cópia
+        return dado;
+    }
+}
+
+void apagar() {
+    struct fila *aux = inicio, *ant = NULL;
+    // limpando os nós
+    while (aux) {
+        ant = aux;
+        aux = aux->proximo;
+        free(ant);
+    }
+    // resetando os ponteiros
+    inicio = fim = NULL;
+}
