@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define tamanho 10
+
+int lista[tamanho];
+int fim = 0;
+int inicio = 0;
+
+void enqueue(int elemento);
+void imprimir();
+int tamanhoFila();
+void apagar();
+int desqueue();
+
+int main() {
+    for (int x = inicio; x < 5; x++) {
+        enqueue(x);
+    }
+    imprimir();
+    printf("%d\n", desqueue());
+    imprimir();
+    apagar();
+    printf("%d\n", tamanhoFila());
+
+    return 0;
+}
+
+void imprimir() {
+    printf("F[ ");
+    for (int i = inicio;; i++) {
+        if (i == tamanho) i = 0;
+        if (i == fim) break;
+        printf("%d ", lista[i]);
+    }
+    printf("]\n");
+}
+
+void enqueue(int elemento) {
+    if ((inicio == 0 && fim + 1 == tamanho) || (fim + 1 == inicio)) {
+        printf("Lista cheia!\n");
+        exit(1);
+    }
+
+    lista[fim] = elemento;
+    fim = (fim + 1) % tamanho;
+}
+
+int tamanhoFila() {
+    if (inicio <= fim)
+        return fim - inicio;
+    else
+        return tamanho - (inicio - fim);
+}
+
+int desqueue() {
+    if (inicio == fim) {
+        printf("Lista vazia\n");
+        exit(1);
+    } else {
+        int dado = lista[inicio];
+        inicio = (inicio + 1) % tamanho;
+        return dado;
+    }
+}
+
+void apagar() {
+    inicio = fim = 0;
+}
