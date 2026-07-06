@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct lista{
+    int dado;
+    struct lista *antes;
+    struct lista *depois;
+};
+struct lista *inicio=NULL, *fim=NULL;
+
+void inserir(int dado);
+struct lista *buscar(int dado);
+void imprimir();
+int tamanho();
+int obter (struct lista*dado);
+void remover(int elemento);
+void apagar();
+
+int main() {
+     for (int x=0;x<5;x++){
+        inserir(x);
+    }
+
+    imprimir();
+    printf("\n");
+    printf("%d\n",buscar(10));
+    printf("%d\n",buscar(1));
+    printf("%d\n",tamanho());
+    remover(3);
+    imprimir();
+    printf("%d\n",obter(buscar(5)));
+    
+    return 0;
+}
+void inserir(int dado){
+    
+    struct lista *novo;
+    novo=malloc(sizeof(struct lista));
+    novo->dado=dado;
+    novo->depois=NULL;
+    novo->antes=NULL;
+    
+    //lista vazia
+    if (inicio==NULL){
+        inicio=novo;
+        fim=novo;
+    }else{
+        novo->antes=fim;
+        fim->depois=novo;//?
+        fim=novo;
+        
+    }
+}
+struct lista *buscar(int dado){
+    struct lista *aux=inicio;
+    while (aux){
+        if (dado==aux->dado){
+            return aux;
+        }
+        aux=aux->depois;// incrementa aux será o proximo nó
+    }
+    
+    return NULL; // não existe o elemento 
+}
+void imprimir(){
+    struct lista *aux= inicio;
+    while(aux){
+        printf("%d - ",aux->dado);
+        aux=aux->depois;
+    }
+}
+int tamanho(){
+    struct lista *aux=inicio;
+    int x=0;
+    while(aux){
+        x++;
+        aux=aux->depois;
+    }
+    return x;
+}
+int obter (struct lista*elemento){
+    if (elemento==NULL){
+        printf("não tem");
+        exit(1);
+
+    }else{
+        return elemento->dado;
+    }
+}
+void remover(int elemento){
+    
+   struct lista *aux=buscar(elemento);
+   
+   if (aux==NULL){
+       return;
+   }
+   if (aux->antes==NULL && aux->depois ==NULL){
+       // só um nó
+       inicio=fim=NULL;
+   }
+   if (aux ==inicio){
+       inicio=aux->depois;
+       inicio->antes=NULL;
+   }
+   if (aux ==fim){
+       fim=aux->antes;
+       inicio->depois=NULL;
+       
+   }else{
+       
+       aux->antes->depois=aux->depois; 
+       //apontodor acessa o nó anterior e nele acesso o campo depois e nele eu modifico para o depois do nó que está sendo removido
+       aux->depois->antes=aux->antes;
+       //apontador acessa o nó  depois dele e nele acessa o campo antes e nele eu modifico para o antes do nó que está sendo removido
+   }
+   free(aux);
+}
+void apagar(){
+    struct lista *aux = inicio, *ant = NULL;
+    //limpando os nós
+    while(aux){
+        ant = aux;
+        aux = aux->depois;
+        free(ant);
+    }
+    //resetando os ponteiros
+    inicio = fim = NULL;
+}
